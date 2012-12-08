@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,19 +26,58 @@ public class AuthorizationManager {
     private String login;
     private String password;
 
-    public void login(ActionEvent evt){
+    public void login(ActionEvent event) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Błąd", "Nie udało się zalogować"));
+        /*
         try {
-            user = userDAO.login(login,password);
+            user = userDAO.login(login, password);
         } catch (UserNotFoundException e) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_FATAL,"Błąd","Nie udało się zalogować"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Błąd", "Nie udało się zalogować"));
+
+        }
+        */
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("albums.xhtml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void logout(ActionEvent event) {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public void logout(ActionEvent event){
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+    public boolean authenticated() {
+        return user != null;
     }
 
-    public boolean authenticated(){
-        return user != null;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title></title>
+    <h:outputStylesheet library="css" name="style.css"/>
+    <f:viewParam name="user" value="#{albumsManager.user}" />
+</h:head>
+
+<h:body>
+    <h:form>
+        <p:growl id="mainMessage" showSummary="true" showDetail="true"/>
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="55"  resizable="true" closable="true" collapsible="true">
+                <p:menubar>
+                    <p:menuitem value="Dodaj album" onclick="test.show()"/>
+                    <p:menuitem value="Wyloguj się" actionListener="#{authorizationManager.logout}" icon="ui-icon-close" />
+                </p:menubar>
+            </p:layoutUnit>
+            <p:layoutUnit position="west" size="200"  resizable="true" closable="true" collapsible="true">
+            </p:layoutUnit>
+            <p:layoutUnit position="east" size="200" resizable="true" closable="true" collapsible="true">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                    <p:dialog widgetVar="test">
+
+                    </p:dialog>
+                    #{albumsManager.init(authorizationManager.login)}
+                    <p:commandButton value="test" actionListener="#{albumsManager.test}" update="mainMessage"/>
+            </p:layoutUnit>
+
+        </p:layout>
+    </h:form>
+</h:body>
+</html>

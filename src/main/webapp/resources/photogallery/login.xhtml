@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+</composite:interface>
+
+<composite:implementation>
+    <p:growl showDetail="true" showSummary="true" id="main"/>
+    <p:fieldset legend="Login" rendered="#{!authorizationManager.authenticated()}" style="width: 210px; margin:0 auto;">
+        <h:panelGrid columns="2" id="login">
+            Login:<p:inputText value="#{authorizationManager.login}" required="true"/>
+            Hasło:<p:password value="#{authorizationManager.password}" required="true"/>
+            <p:commandButton value="Zaloguj się" actionListener="#{authorizationManager.login}" update="main" process="@this,login"/>
+            <p:commandButton type="button" value="Zarejestuj się" onclick="register.show()"/>
+        </h:panelGrid>
+    </p:fieldset>
+    <p:panel rendered="#{authorizationManager.authenticated()}">
+        Witaj #{authorizationManager.user.email}!
+    </p:panel>
+    <p:dialog widgetVar="register">
+        <h:panelGrid columns="2" id="register">
+            Imię: <p:inputText value="" required="true" label="Imię"/>
+            Nazwisko: <p:inputText value="" required="true" label="Nazwisko"/>
+            e-mail: <p:inputText value="" required="true" label="e-mail"/>
+            hasło: <p:password value="" match="pwd2" required="true" label="hasło"/>
+            powtórz hasło: <p:password value="" id="pwd2" required="true" label="powtórz hasło"/>
+        </h:panelGrid>
+        <p:commandButton value="Rejestruj" actionListener="#{authorizationManager.login}" process="@this,register" update="main"/>
+    </p:dialog>
+</composite:implementation>
+
+</html>
