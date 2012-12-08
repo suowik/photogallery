@@ -6,7 +6,7 @@
 
     <groupId>pl.edu.pk.ztbd.photogallery</groupId>
     <artifactId>photogallery</artifactId>
-    <version>1.0</version>
+    <version>1.0-SNAPSHOT</version>
     <name>Photogallery</name>
     <packaging>war</packaging>
     <build>
