@@ -1,5 +1,7 @@
 package pl.edu.pk.ztbd.photogallery.to;
 
+import java.io.Serializable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: PS
@@ -7,7 +9,7 @@ package pl.edu.pk.ztbd.photogallery.to;
  * Time: 17:43
  * To change this template use File | Settings | File Templates.
  */
-public class User {
+public class User implements Serializable {
     private String name;
     private String surname;
     private String email;

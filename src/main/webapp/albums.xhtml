@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:photogallery="http://java.sun.com/jsf/composite/photogallery">
 
 <h:head>
     <title></title>
@@ -12,14 +13,14 @@
 </h:head>
 
 <h:body>
-    <h:form>
+    <h:form enctype="multipart/form-data">
         <p:growl id="mainMessage" showSummary="true" showDetail="true"/>
 
         <p:layout fullPage="true">
 
             <p:layoutUnit position="north" size="55"  resizable="true" closable="true" collapsible="true">
                 <p:menubar>
-                    <p:menuitem value="Dodaj album" onclick="test.show()"/>
+                    <p:menuitem value="Dodaj album" onclick="albumCreate.show()"/>
                     <p:menuitem value="Wyloguj się" actionListener="#{authorizationManager.logout}" icon="ui-icon-close" />
                 </p:menubar>
             </p:layoutUnit>
@@ -30,11 +31,30 @@
             </p:layoutUnit>
 
             <p:layoutUnit position="center">
-                    <p:dialog widgetVar="test">
-
+                <p:dialog widgetVar="photoUploader">
+                    <photogallery:photoUploader/>
+                </p:dialog>
+                <p:dialog widgetVar="albumCreate">
+                        <h:panelGrid columns="2">
+                            Nazwa: <p:inputText value="#{albumsManager.newAlbum.name}"/>
+                            Opis: <p:inputTextarea value="#{albumsManager.newAlbum.description}" cols="20" rows="10"/>
+                            Data stworzenia: <p:calendar value="#{albumsManager.newAlbum.auditCreate}" />
+                        </h:panelGrid>
+                        #{albumsManager.newAlbum.setUserMail(albumsManager.user)}
+                        <p:commandButton actionListener="#{albumsManager.addAlbum}" update="albums" value="Dodaj album" oncomplete="albumCreate.hide()"/>
                     </p:dialog>
                     #{albumsManager.init(authorizationManager.login)}
-                    <p:commandButton value="test" actionListener="#{albumsManager.test}" update="mainMessage"/>
+                    <p:dataGrid id="albums" var="album" value="#{albumsManager.albums}" columns="3" rows="12" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                        <p:panel header="#{album.name}" style="text-align:center">
+                            <h:panelGrid columns="1" style="width:100%">
+                                <h:outputText value="#{album.auditCreate}"/>
+                                <h:outputText value="#{album.description}"/>
+                                <p:button value="Przeglądaj album" outcome="photos">
+                                    <f:param name="albumName" value="#{album.name}"/>
+                                </p:button>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:dataGrid>
             </p:layoutUnit>
 
         </p:layout>

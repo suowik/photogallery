@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+</composite:interface>
+
+<composite:implementation>
+    <h:panelGroup id="photoUploadContainer">
+        Dodawanie zdjęć do albumu: #{photoManager.albumName}
+        <p:growl showDetail="true" showSummary="true" id="notifications"/>
+        <p:fileUpload fileUploadListener="#{fileUploadController.handleFileUpload}"
+                      mode="advanced"
+                      update="photoUploadContainer"
+                      sizeLimit="100000000"
+                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+        <p:dataGrid value="#{photosContainer.photos}" var="photo">
+            <p:panel>
+                <img src="#{photo.imagePath()}" alt="" style="width: 80px; height: 30px;"/>
+            </p:panel>
+        </p:dataGrid>
+        <p:commandButton value="Zapisz" actionListener="#{photosContainer.saveAll}" update="photoUploadContainer"/>
+    </h:panelGroup>
+</composite:implementation>
+
+</html>
