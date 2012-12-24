@@ -1,5 +1,6 @@
 package pl.edu.pk.ztbd.photogallery.dao;
 
+import org.jetbrains.annotations.NotNull;
 import pl.edu.pk.ztbd.photogallery.to.Photo;
 
 /**
@@ -9,6 +10,6 @@ import pl.edu.pk.ztbd.photogallery.to.Photo;
  * Time: 13:36
  */
 public interface PhotoDAO {
-    void add(Photo photo);
+    void add(@NotNull Photo photo);
     void remove(String name);
 }
