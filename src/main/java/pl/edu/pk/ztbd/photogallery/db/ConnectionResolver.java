@@ -14,11 +14,11 @@ import java.sql.SQLException;
  * To change this template use File | Settings | File Templates.
  */
 public class ConnectionResolver {
+    private static final String DATASOURCE_LOCATION = "java:comp/env/jdbc/photogallery";
     public static Connection getConnection() {
-        Connection conn = null;
         try {
             InitialContext ic = new InitialContext();
-            DataSource ds = (DataSource) ic.lookup("java:comp/env/jdbc/photogallery");
+            DataSource ds = (DataSource) ic.lookup(DATASOURCE_LOCATION);
             return ds.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
