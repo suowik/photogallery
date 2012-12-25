@@ -26,19 +26,13 @@ class UserDAOImpl implements UserDAO {
     private static final String SURNAME = "SURNAME";
     private static final String EMAIL = "EMAIL";
     private static final String PASSWORD = "PASSWORD";
-    private Connection connection = ConnectionResolver.getConnection();
 
     @NotNull
     @Override
     public User login(String mail, String password) throws UserNotFoundException {
+        Connection connection = ConnectionResolver.getConnection();
         try {
-            CallableStatement callableStatement = prepareCall(LOGIN);
-            callableStatement.registerOutParameter(1, Types.OTHER);
-            callableStatement.setString(2, mail);
-            callableStatement.setString(3, password);
-            callableStatement.execute();
-            ResultSet rs = (ResultSet) callableStatement.getObject(1);
-            return convertResultSetToUser(rs);
+            return login(mail, password, connection);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new UserNotFoundException();
@@ -51,19 +45,25 @@ class UserDAOImpl implements UserDAO {
         }
     }
 
+    private User login(String mail, String password, Connection connection) throws SQLException {
+        CallableStatement callableStatement = connection.prepareCall(LOGIN);
+        callableStatement.registerOutParameter(1, Types.OTHER);
+        callableStatement.setString(2, mail);
+        callableStatement.setString(3, password);
+        callableStatement.execute();
+        ResultSet rs = (ResultSet) callableStatement.getObject(1);
+        return convertResultSetToUser(rs);
+    }
+
     private User convertResultSetToUser(ResultSet rs) throws SQLException {
         return new User(rs.getString(EMAIL), rs.getString(NAME), rs.getString(SURNAME), rs.getString(PASSWORD));
     }
 
     @Override
     public void register(User user) throws UserExistsException {
+        Connection connection = ConnectionResolver.getConnection();
         try {
-            CallableStatement callableStatement = prepareCall(REGISTER);
-            callableStatement.setString(1, user.getEmail());
-            callableStatement.setString(2, user.getName());
-            callableStatement.setString(3, user.getSurname());
-            callableStatement.setString(4, user.getPassword());
-            callableStatement.execute();
+            register(user, connection);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new UserExistsException();
@@ -76,12 +76,20 @@ class UserDAOImpl implements UserDAO {
         }
     }
 
+    private void register(User user, Connection connection) throws SQLException {
+        CallableStatement callableStatement = connection.prepareCall(REGISTER);
+        callableStatement.setString(1, user.getEmail());
+        callableStatement.setString(2, user.getName());
+        callableStatement.setString(3, user.getSurname());
+        callableStatement.setString(4, user.getPassword());
+        callableStatement.execute();
+    }
+
     @Override
     public void delete(String mail) {
+        Connection connection = ConnectionResolver.getConnection();
         try {
-            CallableStatement callableStatement = prepareCall(REMOVE);
-            callableStatement.setString(1, mail);
-            callableStatement.execute();
+            delete(mail, connection);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -93,19 +101,19 @@ class UserDAOImpl implements UserDAO {
         }
     }
 
+    private void delete(String mail, Connection connection) throws SQLException {
+        CallableStatement callableStatement = connection.prepareCall(REMOVE);
+        callableStatement.setString(1, mail);
+        callableStatement.execute();
+    }
+
     @NotNull
     @Override
     public List<Album> findAlbums(@NotNull User user, int count, int offset) {
         List<Album> result = new ArrayList<Album>();
+        Connection connection = ConnectionResolver.getConnection();
         try {
-            CallableStatement callableStatement = prepareCall(FIND_ALBUMS);
-            callableStatement.registerOutParameter(1, Types.OTHER);
-            callableStatement.setString(2, user.getEmail());
-            callableStatement.setInt(3, count);
-            callableStatement.setInt(4, offset);
-            callableStatement.execute();
-            ResultSet rs = (ResultSet) callableStatement.getObject(1);
-            fillAlbums(result, rs);
+            findAlbums(user, count, offset,connection,result);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -118,6 +126,17 @@ class UserDAOImpl implements UserDAO {
         return result;
     }
 
+    private void findAlbums(User user, int count, int offset, Connection connection, List<Album> albums) throws SQLException {
+        CallableStatement callableStatement = connection.prepareCall(FIND_ALBUMS);
+        callableStatement.registerOutParameter(1, Types.OTHER);
+        callableStatement.setString(2, user.getEmail());
+        callableStatement.setInt(3, count);
+        callableStatement.setInt(4, offset);
+        callableStatement.execute();
+        ResultSet rs = (ResultSet) callableStatement.getObject(1);
+        fillAlbums(albums, rs);
+    }
+
     private void fillAlbums(List<Album> result, ResultSet rs) throws SQLException {
         while (rs.next()) {
             Album album = new Album(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getString(5));
@@ -125,7 +144,4 @@ class UserDAOImpl implements UserDAO {
         }
     }
 
-    private CallableStatement prepareCall(String sql) throws SQLException {
-        return connection.prepareCall(sql);
-    }
 }
