@@ -26,7 +26,7 @@ class UserDAOImpl implements UserDAO {
     private static final String SURNAME = "SURNAME";
     private static final String EMAIL = "EMAIL";
     private static final String PASSWORD = "PASSWORD";
-    private static Connection connection = ConnectionResolver.getConnection();
+    private Connection connection = ConnectionResolver.getConnection();
 
     @NotNull
     @Override
@@ -42,6 +42,12 @@ class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new UserNotFoundException();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -61,6 +67,12 @@ class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new UserExistsException();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -72,6 +84,12 @@ class UserDAOImpl implements UserDAO {
             callableStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -90,6 +108,12 @@ class UserDAOImpl implements UserDAO {
             fillAlbums(result, rs);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return result;
     }
@@ -101,7 +125,7 @@ class UserDAOImpl implements UserDAO {
         }
     }
 
-    private static CallableStatement prepareCall(String sql) throws SQLException {
+    private CallableStatement prepareCall(String sql) throws SQLException {
         return connection.prepareCall(sql);
     }
 }
