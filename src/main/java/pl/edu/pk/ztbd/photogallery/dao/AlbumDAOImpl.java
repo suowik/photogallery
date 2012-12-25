@@ -1,4 +1,4 @@
-package pl.edu.pk.ztbd.photogallery.dao.implementation;
+package pl.edu.pk.ztbd.photogallery.dao;
 
 import org.jetbrains.annotations.NotNull;
 import pl.edu.pk.ztbd.photogallery.dao.AlbumDAO;
@@ -13,7 +13,7 @@ import java.util.List;
  * Date: 24.12.12
  * Time: 13:53
  */
-public class AlbumDAOImpl implements AlbumDAO {
+class AlbumDAOImpl implements AlbumDAO {
     @Override
     public void add(@NotNull Album album) {
     }

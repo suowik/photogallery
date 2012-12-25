@@ -1,6 +1,7 @@
 package pl.edu.pk.ztbd.photogallery.authorization;
 
 import pl.edu.pk.ztbd.photogallery.dao.UserDAO;
+import pl.edu.pk.ztbd.photogallery.dao.UserDAOFactory;
 import pl.edu.pk.ztbd.photogallery.exceptions.UserNotFoundException;
 import pl.edu.pk.ztbd.photogallery.to.User;
 
@@ -21,7 +22,7 @@ import java.io.IOException;
 @ManagedBean(name = "authorizationManager")
 @SessionScoped
 public class AuthorizationManager {
-    private UserDAO userDAO;
+    private UserDAO userDAO = UserDAOFactory.create();
     private User user;
     private String login;
     private String password;

@@ -3,7 +3,6 @@ IS
 PROCEDURE register (
   name VARCHAR2,
 	surname VARCHAR2,
-	address VARCHAR2,
 	email VARCHAR2,
 	password VARCHAR2
 );

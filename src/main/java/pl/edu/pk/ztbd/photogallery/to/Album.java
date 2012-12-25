@@ -17,6 +17,17 @@ public class Album implements Serializable {
     private Date auditCreate;
     private String description;
 
+    public Album(long albumId, String userMail, String name, Date auditCreate, String description) {
+        this.albumId = albumId;
+        this.userMail = userMail;
+        this.name = name;
+        this.auditCreate = auditCreate;
+        this.description = description;
+    }
+
+    public Album() {
+    }
+
     public long getAlbumId() {
         return albumId;
     }
