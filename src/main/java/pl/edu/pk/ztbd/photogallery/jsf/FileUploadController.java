@@ -4,14 +4,10 @@ import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import pl.edu.pk.ztbd.photogallery.to.Photo;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
 import java.io.*;
-import java.net.*;
 
 /**
  * Created with IntelliJ IDEA.
