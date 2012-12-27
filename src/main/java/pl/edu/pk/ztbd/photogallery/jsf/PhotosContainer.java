@@ -1,5 +1,7 @@
 package pl.edu.pk.ztbd.photogallery.jsf;
 
+import pl.edu.pk.ztbd.photogallery.dao.PhotoDAO;
+import pl.edu.pk.ztbd.photogallery.dao.PhotoDAOFactory;
 import pl.edu.pk.ztbd.photogallery.to.Photo;
 
 import javax.faces.bean.ManagedBean;
@@ -20,7 +22,7 @@ import java.util.List;
 @ViewScoped
 public class PhotosContainer implements Serializable {
     private List<Photo> photos;
-
+    private PhotoDAO photoDAO = PhotoDAOFactory.create();
     public PhotosContainer() {
         photos = new ArrayList<Photo>();
     }
@@ -31,6 +33,7 @@ public class PhotosContainer implements Serializable {
     }
 
     public void add(Photo photo){
+        photoDAO.add(photo);
         photos.add(photo);
     }
 

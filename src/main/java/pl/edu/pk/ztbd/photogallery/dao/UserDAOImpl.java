@@ -21,7 +21,7 @@ class UserDAOImpl implements UserDAO {
     private static final String LOGIN = "{call ? = user_management.login(?,?)}";
     private static final String REGISTER = "{call user_management.register(?,?,?,?)}";
     private static final String REMOVE = "{call user_management.remove(?)}";
-    private static final String FIND_ALBUMS = "{call ? = user_management.find_albums(?,?,?)}";
+    private static final String FIND_ALBUMS = "{call ? = user_management.find_albums(?)}";
     private static final String NAME = "NAME";
     private static final String SURNAME = "SURNAME";
     private static final String EMAIL = "EMAIL";
@@ -109,11 +109,11 @@ class UserDAOImpl implements UserDAO {
 
     @NotNull
     @Override
-    public List<Album> findAlbums(@NotNull User user, int count, int offset) {
+    public List<Album> findAlbums(String email) {
         List<Album> result = new ArrayList<Album>();
         Connection connection = ConnectionResolver.getConnection();
         try {
-            findAlbums(user, count, offset,connection,result);
+            findAlbums(email,connection,result);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -126,12 +126,10 @@ class UserDAOImpl implements UserDAO {
         return result;
     }
 
-    private void findAlbums(User user, int count, int offset, Connection connection, List<Album> albums) throws SQLException {
+    private void findAlbums(String email, Connection connection, List<Album> albums) throws SQLException {
         CallableStatement callableStatement = connection.prepareCall(FIND_ALBUMS);
         callableStatement.registerOutParameter(1, Types.OTHER);
-        callableStatement.setString(2, user.getEmail());
-        callableStatement.setInt(3, count);
-        callableStatement.setInt(4, offset);
+        callableStatement.setString(2, email);
         callableStatement.execute();
         ResultSet rs = (ResultSet) callableStatement.getObject(1);
         fillAlbums(albums, rs);

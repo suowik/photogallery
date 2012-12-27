@@ -9,7 +9,7 @@
 <h:head>
     <title></title>
     <h:outputStylesheet library="css" name="style.css"/>
-    <f:viewParam name="user" value="#{albumsManager.user}" />
+    <f:viewParam name="email" value="#{albumsManager.email}" />
 </h:head>
 
 <h:body>
@@ -40,7 +40,7 @@
                             Opis: <p:inputTextarea value="#{albumsManager.newAlbum.description}" cols="20" rows="10"/>
                             Data stworzenia: <p:calendar value="#{albumsManager.newAlbum.auditCreate}" />
                         </h:panelGrid>
-                        #{albumsManager.newAlbum.setUserMail(albumsManager.user)}
+                        #{albumsManager.newAlbum.setUserMail(albumsManager.email)}
                         <p:commandButton actionListener="#{albumsManager.addAlbum}" update="albums" value="Dodaj album" oncomplete="albumCreate.hide()"/>
                     </p:dialog>
                     #{albumsManager.init(authorizationManager.login)}

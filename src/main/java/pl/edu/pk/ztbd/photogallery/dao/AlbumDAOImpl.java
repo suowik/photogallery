@@ -1,7 +1,6 @@
 package pl.edu.pk.ztbd.photogallery.dao;
 
 import org.jetbrains.annotations.NotNull;
-import pl.edu.pk.ztbd.photogallery.dao.AlbumDAO;
 import pl.edu.pk.ztbd.photogallery.to.Album;
 import pl.edu.pk.ztbd.photogallery.to.Photo;
 
@@ -24,7 +23,7 @@ class AlbumDAOImpl implements AlbumDAO {
 
     @NotNull
     @Override
-    public List<Photo> findPhotos(@NotNull Album album, int count, int offset) {
+    public List<Photo> findPhotos(String album) {
         return null;
     }
 }

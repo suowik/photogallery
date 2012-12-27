@@ -1,4 +1,4 @@
-package pl.edu.pk.ztbd.photogallery.authorization;
+package pl.edu.pk.ztbd.photogallery.jsf;
 
 import pl.edu.pk.ztbd.photogallery.dao.UserDAO;
 import pl.edu.pk.ztbd.photogallery.dao.UserDAOFactory;
@@ -28,21 +28,20 @@ public class AuthorizationManager {
     private String password;
 
     public void login(ActionEvent event) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Błąd", "Nie udało się zalogować"));
-        /*
         try {
             user = userDAO.login(login, password);
+            redirectToAlbums();
         } catch (UserNotFoundException e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Błąd", "Nie udało się zalogować"));
-
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błąd logowania", "Niepoprawne dane"));
         }
-        */
+    }
+
+    private void redirectToAlbums(){
         try {
             FacesContext.getCurrentInstance().getExternalContext().redirect("albums.xhtml");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void logout(ActionEvent event) {

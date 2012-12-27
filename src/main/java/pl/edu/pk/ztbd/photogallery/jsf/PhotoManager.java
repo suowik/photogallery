@@ -1,8 +1,13 @@
 package pl.edu.pk.ztbd.photogallery.jsf;
 
+import pl.edu.pk.ztbd.photogallery.dao.AlbumDAO;
+import pl.edu.pk.ztbd.photogallery.dao.AlbumDAOFactory;
+import pl.edu.pk.ztbd.photogallery.to.Photo;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,9 +20,16 @@ import javax.faces.event.ActionEvent;
 @ViewScoped
 public class PhotoManager {
     private String albumName;
+    private AlbumDAO albumDAO = AlbumDAOFactory.create();
+    private List<Photo> photos;
 
     public void init(String album){
         albumName = album;
+        photos = loadPhotos();
+    }
+
+    private List<Photo> loadPhotos() {
+        return albumDAO.findPhotos(albumName);
     }
 
 

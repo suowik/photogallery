@@ -21,5 +21,5 @@ public interface UserDAO {
     void register(User user) throws UserExistsException;
     void delete(String mail);
     @NotNull
-    List<Album> findAlbums(@NotNull User user, int count, int offset);
+    List<Album> findAlbums(String email);
 }

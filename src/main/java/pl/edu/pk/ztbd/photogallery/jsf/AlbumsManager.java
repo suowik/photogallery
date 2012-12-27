@@ -1,12 +1,14 @@
 package pl.edu.pk.ztbd.photogallery.jsf;
 
+import org.w3c.dom.UserDataHandler;
+import pl.edu.pk.ztbd.photogallery.dao.AlbumDAO;
+import pl.edu.pk.ztbd.photogallery.dao.AlbumDAOFactory;
+import pl.edu.pk.ztbd.photogallery.dao.UserDAO;
+import pl.edu.pk.ztbd.photogallery.dao.UserDAOFactory;
 import pl.edu.pk.ztbd.photogallery.to.Album;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,30 +25,33 @@ import java.util.List;
 @ViewScoped
 public class AlbumsManager implements Serializable {
 
-    private String user;
+    private String email;
     private List<Album> albums;
     private Album newAlbum = new Album();
+    private UserDAO userDAO = UserDAOFactory.create();
+    private AlbumDAO albumDAO = AlbumDAOFactory.create();
+
 
     public void addAlbum(ActionEvent event){
-        albums.add(newAlbum);
+        albumDAO.add(newAlbum);
         newAlbum = new Album();
     }
 
     public void init(String email){
-        user = email;
-        albums = loadAlbums(email);
+        this.email = email;
+        albums = loadAlbums();
     }
 
-    private List<Album> loadAlbums(String email){
-        return new ArrayList<Album>();
+    private List<Album> loadAlbums(){
+        return userDAO.findAlbums(email);
     }
 
-    public String getUser() {
-        return user;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<Album> getAlbums() {
