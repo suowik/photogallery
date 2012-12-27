@@ -1,5 +1,6 @@
 package pl.edu.pk.ztbd.photogallery.dao;
 
+import oracle.jdbc.OracleTypes;
 import org.jetbrains.annotations.NotNull;
 import pl.edu.pk.ztbd.photogallery.db.ConnectionResolver;
 import pl.edu.pk.ztbd.photogallery.exceptions.UserExistsException;
@@ -47,7 +48,7 @@ class UserDAOImpl implements UserDAO {
 
     private User login(String mail, String password, Connection connection) throws SQLException {
         CallableStatement callableStatement = connection.prepareCall(LOGIN);
-        callableStatement.registerOutParameter(1, Types.OTHER);
+        callableStatement.registerOutParameter(1, OracleTypes.OTHER);
         callableStatement.setString(2, mail);
         callableStatement.setString(3, password);
         callableStatement.execute();

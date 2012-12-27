@@ -17,9 +17,7 @@ FUNCTION login(
 ) RETURN USERS%rowtype;
 
 FUNCTION findAlbums(
-	email VARCHAR2,
-	count NUMBER,
-	offset NUMBER
+	email VARCHAR2
 ) RETURN SYS_REFCURSOR;
 END;
 
@@ -35,9 +33,7 @@ PROCEDURE remove(
 );
 
 FUNCTION findPhotos(
-	name VARCHAR2,
-	count NUMBER,
-	offset NUMBER
+	name VARCHAR2
 ) RETURN SYS_REFCURSOR;
 END;
 
