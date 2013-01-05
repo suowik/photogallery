@@ -25,7 +25,7 @@ END;
 CREATE OR REPLACE PACKAGE album_management
 IS
 PROCEDURE add (
-	name VARCHAR2,
+	name VARCHAR2
 );
 
 PROCEDURE remove(
@@ -40,7 +40,7 @@ END;
 CREATE OR REPLACE PACKAGE photo_management
 IS
 PROCEDURE add (
-	name VARCHAR2,
+	name VARCHAR2
 );
 
 PROCEDURE remove(
