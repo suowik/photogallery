@@ -25,9 +25,14 @@ PACKAGE BODY USER_MANAGEMENT AS
   o_Surname Out Varchar2 
 ) As
   Name Varchar2(255);
-  surname varchar2(255);
+  Surname Varchar2(255);
+  Invalid_Credentials Exception;
   Begin
-    SELECT name, surname INTO o_name, o_surname FROM USERS WHERE email=p_login and p_password=password;
+    Select Name, Surname Into O_Name, O_Surname From Users Where Email=P_Login And P_Password=Password;
+    EXCEPTION
+       When No_Data_Found  Then
+       Raise Invalid_Credentials;
+
   END login;
 
   FUNCTION findAlbums(
