@@ -18,19 +18,21 @@ PACKAGE BODY USER_MANAGEMENT AS
     DELETE FROM USERS where p_email=email;
   END remove;
 
-  Function Login(
-	p_login Varchar2,
-	p_password VARCHAR2
-) RETURN USERS%rowtype AS
-  result USERS%rowtype;
+  Procedure Login(
+	P_Login In Varchar2 ,
+	P_Password In Varchar2 ,
+  O_Name Out Varchar2 ,
+  o_Surname Out Varchar2 
+) As
+  Name Varchar2(255);
+  surname varchar2(255);
   Begin
-    SELECT * INTO result FROM USERS WHERE email=p_login and p_password=password;
-    RETURN result;
+    SELECT name, surname INTO o_name, o_surname FROM USERS WHERE email=p_login and p_password=password;
   END login;
 
   FUNCTION findAlbums(
 	email VARCHAR2
-) RETURN SYS_REFCURSOR AS
+) Return Sys_Refcursor As
   BEGIN
     /* TODO implementation required */
     RETURN NULL;

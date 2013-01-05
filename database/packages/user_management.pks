@@ -1,4 +1,5 @@
-CREATE OR REPLACE PACKAGE user_management
+create or replace 
+PACKAGE user_management
 IS
 PROCEDURE register (
   name VARCHAR2,
@@ -11,10 +12,12 @@ PROCEDURE remove(
 	p_email VARCHAR2
 );
 
-Function Login(
-	p_login VARCHAR2,
-	p_password VARCHAR2
-) RETURN USERS%rowtype;
+Procedure Login(
+	P_Login In Varchar2 ,
+	P_Password In Varchar2 ,
+  O_Name Out Varchar2 ,
+  o_surname OUT varchar2 
+);
 
 FUNCTION findAlbums(
 	email VARCHAR2
