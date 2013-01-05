@@ -19,7 +19,8 @@ Procedure Login(
   o_surname OUT varchar2 
 );
 
-FUNCTION findAlbums(
-	email VARCHAR2
-) RETURN SYS_REFCURSOR;
+PROCEDURE findAlbums(
+	email IN VARCHAR2,
+	albums OUT SYS_REFCURSOR 
+);
 End;

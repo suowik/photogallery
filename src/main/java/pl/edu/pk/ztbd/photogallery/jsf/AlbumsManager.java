@@ -1,17 +1,18 @@
 package pl.edu.pk.ztbd.photogallery.jsf;
 
-import org.w3c.dom.UserDataHandler;
 import pl.edu.pk.ztbd.photogallery.dao.AlbumDAO;
 import pl.edu.pk.ztbd.photogallery.dao.AlbumDAOFactory;
 import pl.edu.pk.ztbd.photogallery.dao.UserDAO;
 import pl.edu.pk.ztbd.photogallery.dao.UserDAOFactory;
 import pl.edu.pk.ztbd.photogallery.to.Album;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,19 +32,23 @@ public class AlbumsManager implements Serializable {
     private UserDAO userDAO = UserDAOFactory.create();
     private AlbumDAO albumDAO = AlbumDAOFactory.create();
 
+    @ManagedProperty("#{authorizationManager}")
+    AuthorizationManager authorizationManager;
 
     public void addAlbum(ActionEvent event){
+        newAlbum.setUserMail(authorizationManager.getUser().getEmail());
         albumDAO.add(newAlbum);
+        FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("Dodano album"));
         newAlbum = new Album();
+        albums = loadAlbums();
     }
 
-    public void init(String email){
-        this.email = email;
+    public void init(){
         albums = loadAlbums();
     }
 
     private List<Album> loadAlbums(){
-        return userDAO.findAlbums(email);
+        return userDAO.findAlbums(authorizationManager.getUser().getEmail());
     }
 
     public String getEmail() {
@@ -68,5 +73,13 @@ public class AlbumsManager implements Serializable {
 
     public void setNewAlbum(Album newAlbum) {
         this.newAlbum = newAlbum;
+    }
+
+    public AuthorizationManager getAuthorizationManager() {
+        return authorizationManager;
+    }
+
+    public void setAuthorizationManager(AuthorizationManager authorizationManager) {
+        this.authorizationManager = authorizationManager;
     }
 }

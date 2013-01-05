@@ -9,8 +9,8 @@
 <h:head>
     <title></title>
     <h:outputStylesheet library="css" name="style.css"/>
-    <f:viewParam name="email" value="#{albumsManager.email}" />
 </h:head>
+
 
 <h:body>
     <h:form enctype="multipart/form-data">
@@ -35,26 +35,24 @@
                     <photogallery:photoUploader/>
                 </p:dialog>
                 <p:dialog widgetVar="albumCreate">
-                        <h:panelGrid columns="2">
-                            Nazwa: <p:inputText value="#{albumsManager.newAlbum.name}"/>
-                            Opis: <p:inputTextarea value="#{albumsManager.newAlbum.description}" cols="20" rows="10"/>
-                            Data stworzenia: <p:calendar value="#{albumsManager.newAlbum.auditCreate}" />
+                    <h:panelGrid columns="2">
+                        Nazwa: <p:inputText value="#{albumsManager.newAlbum.name}"/>
+                        Opis: <p:inputTextarea value="#{albumsManager.newAlbum.description}" cols="20" rows="10"/>
+                    </h:panelGrid>
+                    <p:commandButton actionListener="#{albumsManager.addAlbum}" update="mainMessage,albums" value="Dodaj album" oncomplete="albumCreate.hide();"/>
+                </p:dialog>
+                #{albumsManager.init()}
+                <p:dataGrid var="album" id="albums" value="#{albumsManager.albums}" columns="3" rows="12" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    <p:panel header="#{album.name}" style="text-align:center; font-size: 14px;">
+                        <h:panelGrid columns="1" style="width:100%">
+                            <h:outputText value="#{album.auditCreate}"/>
+                            <h:outputText value="#{album.description}"/>
+                            <p:button value="Przeglądaj album" outcome="photos">
+                                <f:param name="albumName" value="#{album.name}"/>
+                            </p:button>
                         </h:panelGrid>
-                        #{albumsManager.newAlbum.setUserMail(albumsManager.email)}
-                        <p:commandButton actionListener="#{albumsManager.addAlbum}" update="albums" value="Dodaj album" oncomplete="albumCreate.hide()"/>
-                    </p:dialog>
-                    #{albumsManager.init(authorizationManager.login)}
-                    <p:dataGrid id="albums" var="album" value="#{albumsManager.albums}" columns="3" rows="12" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                        <p:panel header="#{album.name}" style="text-align:center">
-                            <h:panelGrid columns="1" style="width:100%">
-                                <h:outputText value="#{album.auditCreate}"/>
-                                <h:outputText value="#{album.description}"/>
-                                <p:button value="Przeglądaj album" outcome="photos">
-                                    <f:param name="albumName" value="#{album.name}"/>
-                                </p:button>
-                            </h:panelGrid>
-                        </p:panel>
-                    </p:dataGrid>
+                    </p:panel>
+                </p:dataGrid>
             </p:layoutUnit>
 
         </p:layout>

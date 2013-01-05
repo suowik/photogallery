@@ -35,12 +35,12 @@ PACKAGE BODY USER_MANAGEMENT AS
 
   END login;
 
-  FUNCTION findAlbums(
-	email VARCHAR2
-) Return Sys_Refcursor As
+  PROCEDURE findAlbums(
+	email IN VARCHAR2,
+  albums OUT SYS_REFCURSOR) 
+  IS
   BEGIN
-    /* TODO implementation required */
-    RETURN NULL;
+   OPEN albums FOR SELECT * FROM ALBUMS WHERE ALBUMS.USER_MAIL = email; 
   END findAlbums;
 
 END USER_MANAGEMENT;

@@ -8,6 +8,7 @@ import pl.edu.pk.ztbd.photogallery.exceptions.UserNotFoundException;
 import pl.edu.pk.ztbd.photogallery.to.Album;
 import pl.edu.pk.ztbd.photogallery.to.User;
 
+import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +19,11 @@ import java.util.List;
  * Date: 24.12.12
  * Time: 13:41
  */
-class UserDAOImpl implements UserDAO {
-    private static final String LOGIN = "{call ? = user_management.login(?,?)}";
+class UserDAOImpl implements UserDAO, Serializable {
+    private static final String LOGIN = "{call user_management.login(?,?,?,?)}";
     private static final String REGISTER = "{call user_management.register(?,?,?,?)}";
     private static final String REMOVE = "{call user_management.remove(?)}";
-    private static final String FIND_ALBUMS = "{call ? = user_management.find_albums(?)}";
-    private static final String NAME = "NAME";
-    private static final String SURNAME = "SURNAME";
-    private static final String EMAIL = "EMAIL";
-    private static final String PASSWORD = "PASSWORD";
+    private static final String FIND_ALBUMS = "{call user_management.findAlbums(?,?)}";
 
     @NotNull
     @Override
@@ -48,16 +45,12 @@ class UserDAOImpl implements UserDAO {
 
     private User login(String mail, String password, Connection connection) throws SQLException {
         CallableStatement callableStatement = connection.prepareCall(LOGIN);
-        callableStatement.registerOutParameter(1, OracleTypes.OTHER);
-        callableStatement.setString(2, mail);
-        callableStatement.setString(3, password);
+        callableStatement.setString(1, mail);
+        callableStatement.setString(2, password);
+        callableStatement.registerOutParameter(3, OracleTypes.VARCHAR);
+        callableStatement.registerOutParameter(4, OracleTypes.VARCHAR);
         callableStatement.execute();
-        ResultSet rs = (ResultSet) callableStatement.getObject(1);
-        return convertResultSetToUser(rs);
-    }
-
-    private User convertResultSetToUser(ResultSet rs) throws SQLException {
-        return new User(rs.getString(EMAIL), rs.getString(NAME), rs.getString(SURNAME), rs.getString(PASSWORD));
+        return new User(callableStatement.getString(3),callableStatement.getString(4),mail,password);
     }
 
     @Override
@@ -79,9 +72,9 @@ class UserDAOImpl implements UserDAO {
 
     private void register(User user, Connection connection) throws SQLException {
         CallableStatement callableStatement = connection.prepareCall(REGISTER);
-        callableStatement.setString(1, user.getEmail());
-        callableStatement.setString(2, user.getName());
-        callableStatement.setString(3, user.getSurname());
+        callableStatement.setString(1, user.getName());
+        callableStatement.setString(2, user.getSurname());
+        callableStatement.setString(3, user.getEmail());
         callableStatement.setString(4, user.getPassword());
         callableStatement.execute();
     }
@@ -129,11 +122,12 @@ class UserDAOImpl implements UserDAO {
 
     private void findAlbums(String email, Connection connection, List<Album> albums) throws SQLException {
         CallableStatement callableStatement = connection.prepareCall(FIND_ALBUMS);
-        callableStatement.registerOutParameter(1, Types.OTHER);
-        callableStatement.setString(2, email);
-        callableStatement.execute();
-        ResultSet rs = (ResultSet) callableStatement.getObject(1);
+        callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+        callableStatement.setString(1, email);
+        callableStatement.executeUpdate();
+        ResultSet rs = (ResultSet) callableStatement.getObject(2);
         fillAlbums(albums, rs);
+        callableStatement.close();
     }
 
     private void fillAlbums(List<Album> result, ResultSet rs) throws SQLException {
@@ -141,6 +135,7 @@ class UserDAOImpl implements UserDAO {
             Album album = new Album(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getString(5));
             result.add(album);
         }
+        rs.close();
     }
 
 }

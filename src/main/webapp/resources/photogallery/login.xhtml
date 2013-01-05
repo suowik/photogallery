@@ -22,13 +22,12 @@
     </p:panel>
     <p:dialog widgetVar="register">
         <h:panelGrid columns="2" id="register">
-            Imię: <p:inputText value="" required="true" label="Imię"/>
-            Nazwisko: <p:inputText value="" required="true" label="Nazwisko"/>
-            e-mail: <p:inputText value="" required="true" label="e-mail"/>
-            hasło: <p:password value="" match="pwd2" required="true" label="hasło"/>
-            powtórz hasło: <p:password value="" id="pwd2" required="true" label="powtórz hasło"/>
+            Imię: <p:inputText value="#{registrationBean.user.name}" required="true" label="Imię"/>
+            Nazwisko: <p:inputText value="#{registrationBean.user.surname}" required="true" label="Nazwisko"/>
+            e-mail: <p:inputText value="#{registrationBean.user.email}" required="true" label="e-mail"/>
+            hasło: <p:password value="#{registrationBean.user.password}" required="true" label="hasło"/>
         </h:panelGrid>
-        <p:commandButton value="Rejestruj" actionListener="#{authorizationManager.login}" process="@this,register" update="main"/>
+        <p:commandButton value="Rejestruj" actionListener="#{registrationBean.register}" process="@this,register" update="main"/>
     </p:dialog>
 </composite:implementation>
 
