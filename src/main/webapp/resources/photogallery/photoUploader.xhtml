@@ -16,12 +16,22 @@
                       update="photoUploadContainer"
                       sizeLimit="100000000"
                       allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
-        <p:dataGrid value="#{photosContainer.photos}" var="photo">
-            <p:panel>
-                <img src="#{photo.imagePath()}" alt="" style="width: 80px; height: 30px;"/>
-            </p:panel>
+        <p:dataGrid value="#{photosContainer.photos}" var="photo" id="photos">
+            <p:column>
+                <p:panel>
+                    <img src="#{photo.imageWithPath()}" alt="" style="width: 80px; height: 30px;"/>
+                    <h:panelGrid columns="2">
+                        Tytuł: <p:inputText value="#{photo.title}"/>
+                        Opis: <p:inputText value="#{photo.description}"/>
+                        Miejsce: <p:inputText value="#{photo.place}"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Dodaj" update="photos" actionListener="#{photosContainer.addPhoto}">
+                        <f:attribute value="#{photo}" name="photo" />
+                    </p:commandButton>
+                </p:panel>
+            </p:column>
         </p:dataGrid>
-        <p:commandButton value="Zapisz" actionListener="#{photosContainer.saveAll}" update="photoUploadContainer"/>
+        <p:commandButton value="Zapisz" actionListener="#{photosContainer.addAllPhotos}" update="photos"/>
     </h:panelGroup>
 </composite:implementation>
 

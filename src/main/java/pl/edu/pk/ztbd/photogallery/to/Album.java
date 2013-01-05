@@ -25,6 +25,10 @@ public class Album implements Serializable {
         this.description = description;
     }
 
+    public Album(String name) {
+        this.name = name;
+    }
+
     public Album() {
     }
 

@@ -21,8 +21,8 @@ public class Photo implements Serializable {
     public Photo() {
     }
 
-    public String imagePath(){
-        return "/photos/"+filename;
+    public String imageWithPath(){
+        return "../photos/"+filename;
     }
 
     public Photo(String filename) {

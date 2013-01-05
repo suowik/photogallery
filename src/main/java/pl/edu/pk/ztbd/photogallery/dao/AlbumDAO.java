@@ -17,5 +17,5 @@ public interface AlbumDAO {
     void add(@NotNull Album album);
     void remove(String name);
     @NotNull
-    List<Photo> findPhotos(String album);
+    List<Photo> findPhotos(String email, String album);
 }

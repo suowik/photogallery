@@ -34,8 +34,26 @@
             </p:layoutUnit>
 
             <p:layoutUnit position="center">
+                #{photoManager.init()}
+                <!--
+                <p:dataGrid columns="3" value="#{photoManager.photos}" var="photo">
+                    <p:column>
+                        <p:panel>
+                            <f:facet name="header">
+                                #{photo.title}
+                            </f:facet>
+                            <img src="/photos/#{photo.filename}" alt="" style="width:300px; height:120px;" title="/photos/#{photo.filename}"/><br />
+                            #{photo.place}<br />
+                            #{photo.description}
+                        </p:panel>
+                    </p:column>
+                </p:dataGrid>-->
+                <p:galleria value="#{photoManager.photos}" var="photo" panelWidth="900" panelHeight="500" showCaption="true">
+                    <p:graphicImage value="../photos/#{photo.filename}" alt="#{photo.description}" title="#{photo.title}"/>
+                </p:galleria>
                 <p:dialog widgetVar="addPhotos">
                     <photogallery:photoUploader/>
+
                 </p:dialog>
             </p:layoutUnit>
 

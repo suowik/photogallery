@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
     <resource-ref>
-        <description>Polaczenie</description>
+        <description>Polaczenie z baza</description>
         <res-ref-name>jdbc/photogallery</res-ref-name>
         <res-type>
             javax.sql.DataSource
@@ -30,6 +30,16 @@
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
 
+    <filter>
+        <filter-name>UTFFilter</filter-name>
+        <filter-class>pl.edu.pk.ztbd.photogallery.filters.UTFFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>UTFFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <filter-mapping>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
@@ -47,7 +57,7 @@
         <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
         <init-param>
             <param-name>uploadDirectory</param-name>
-            <param-value>F:/photogallery/</param-value> <!-- moze dajmy to relative path zeby na tomcata gdzies to szlo? znowu bede miec problem z literkami dyskow -->
+            <param-value>E:/photogallery/</param-value> <!-- moze dajmy to relative path zeby na tomcata gdzies to szlo? znowu bede miec problem z literkami dyskow -->
         </init-param>
     </filter>
 
