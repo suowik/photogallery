@@ -19,7 +19,7 @@
         <p:dataGrid value="#{photosContainer.photos}" var="photo" id="photos">
             <p:column>
                 <p:panel>
-                    <img src="#{photo.imageWithPath()}" alt="" style="width: 80px; height: 30px;"/>
+                    <img src="/photos/#{authorizationManager.user.email}/#{photoManager.currentAlbum.name}/min/#{photo.filename}" alt="" style="width: 80px; height: 30px;"/>
                     <h:panelGrid columns="2">
                         Tytuł: <p:inputText value="#{photo.title}"/>
                         Opis: <p:inputText value="#{photo.description}"/>

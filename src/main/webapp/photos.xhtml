@@ -13,8 +13,8 @@
 </h:head>
 
 <f:metadata>
-    <f:viewParam name="albumName" value="#{photoManager.albumName}" />
-    <f:viewParam name="albumName" value="#{fileUploadController.album}" />
+    <f:viewParam name="albumName" value="#{photoManager.albumName}"/>
+    <f:viewParam name="albumName" value="#{fileUploadController.album}"/>
 </f:metadata>
 <h:body>
     <h:form enctype="multipart/form-data" id="form">
@@ -22,13 +22,14 @@
 
         <p:layout fullPage="true">
 
-            <p:layoutUnit position="north" size="55"  resizable="true" closable="true" collapsible="true">
+            <p:layoutUnit position="north" size="55" resizable="true" closable="true" collapsible="true">
                 <p:menubar>
                     <p:menuitem value="Dodaj zdjęcia do albumu" onclick="addPhotos.show()"/>
-                    <p:menuitem value="Wyloguj się" actionListener="#{authorizationManager.logout}" icon="ui-icon-close" />
+                    <p:menuitem value="Wyloguj się" actionListener="#{authorizationManager.logout}"
+                                icon="ui-icon-close"/>
                 </p:menubar>
             </p:layoutUnit>
-            <p:layoutUnit position="west" size="200"  resizable="true" closable="true" collapsible="true">
+            <p:layoutUnit position="west" size="200" resizable="true" closable="true" collapsible="true">
             </p:layoutUnit>
             <p:layoutUnit position="east" size="200" resizable="true" closable="true" collapsible="true">
 
@@ -42,18 +43,27 @@
                             <f:facet name="header">
                                 #{photo.title}
                             </f:facet>
-                            <img src="/photos/#{authorizationManager.user.email}/#{photoManager.currentAlbum.name}/min/#{photo.filename}" alt="" style="width:300px; height:120px;" title="/photos/#{photo.filename}"/><br />
-                            #{photo.place}<br />
+                            <img src="/photos/#{authorizationManager.user.email}/#{photoManager.currentAlbum.name}/min/#{photo.filename}"
+                                 alt="" title="#{photo.filename}"/><br/>
+                            #{photo.place}<br/>
                             #{photo.description}
-                            <p:commandLink update=":form:bigPhoto" oncomplete="showBig.show()" actionListener="#{photoManager.prepareBigImage}" title="View Detail">
-                                <f:attribute value="#{photo.filename}" name="filename"/>
-                                <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                            <p:commandLink update=":form:bigPhoto" oncomplete="showBig.show()"
+                                           actionListener="#{photoManager.prepareBigImage}" title="View Detail">
+                                <f:attribute value="#{photo}" name="photo"/>
+                                <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;"/>
                             </p:commandLink>
                         </p:panel>
                     </p:column>
                 </p:dataGrid>
-                <p:dialog widgetVar="showBig" id="bigPhoto">
-                    <img src="/photos/#{authorizationManager.user.email}/#{photoManager.currentAlbum.name}/big/#{photoManager.selectedPhoto}" alt="" style="width:300px; height:120px;" title=""/>
+                <p:dialog widgetVar="showBig" id="bigPhoto" header="#{photoManager.selectedPhoto.title}" style="height: 700px; width: 850px;">
+                    <img src="/photos/#{authorizationManager.user.email}/#{photoManager.currentAlbum.name}/big/#{photoManager.selectedPhoto.filename}"
+                         alt="" style="max-width:800px; max-height:600px;" title=""/><br/>
+                    <h:panelGrid columns="2">
+                        Tytuł: <h:outputText value="#{photoManager.selectedPhoto.title}"/>
+                        Miejsce: <h:outputText value="#{photoManager.selectedPhoto.place}"/>
+                        Opis: <h:outputText value="#{photoManager.selectedPhoto.description}"/>
+                    </h:panelGrid>
+
                 </p:dialog>
                 <p:dialog widgetVar="addPhotos">
                     <photogallery:photoUploader/>
