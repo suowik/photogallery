@@ -14,6 +14,7 @@
 
 <f:metadata>
     <f:viewParam name="albumName" value="#{photoManager.albumName}" />
+    <f:viewParam name="albumName" value="#{fileUploadController.album}" />
 </f:metadata>
 <h:body>
     <h:form enctype="multipart/form-data" id="form">
@@ -35,22 +36,25 @@
 
             <p:layoutUnit position="center">
                 #{photoManager.init()}
-                <!--
                 <p:dataGrid columns="3" value="#{photoManager.photos}" var="photo">
                     <p:column>
                         <p:panel>
                             <f:facet name="header">
                                 #{photo.title}
                             </f:facet>
-                            <img src="/photos/#{photo.filename}" alt="" style="width:300px; height:120px;" title="/photos/#{photo.filename}"/><br />
+                            <img src="/photos/#{authorizationManager.user.email}/#{photoManager.currentAlbum.name}/min/#{photo.filename}" alt="" style="width:300px; height:120px;" title="/photos/#{photo.filename}"/><br />
                             #{photo.place}<br />
                             #{photo.description}
+                            <p:commandLink update=":form:bigPhoto" oncomplete="showBig.show()" actionListener="#{photoManager.prepareBigImage}" title="View Detail">
+                                <f:attribute value="#{photo.filename}" name="filename"/>
+                                <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                            </p:commandLink>
                         </p:panel>
                     </p:column>
-                </p:dataGrid>-->
-                <p:galleria value="#{photoManager.photos}" var="photo" panelWidth="900" panelHeight="500" showCaption="true">
-                    <p:graphicImage value="../photos/#{photo.filename}" alt="#{photo.description}" title="#{photo.title}"/>
-                </p:galleria>
+                </p:dataGrid>
+                <p:dialog widgetVar="showBig" id="bigPhoto">
+                    <img src="/photos/#{authorizationManager.user.email}/#{photoManager.currentAlbum.name}/big/#{photoManager.selectedPhoto}" alt="" style="width:300px; height:120px;" title=""/>
+                </p:dialog>
                 <p:dialog widgetVar="addPhotos">
                     <photogallery:photoUploader/>
 

@@ -24,9 +24,15 @@ public class PhotoManager {
     private String albumName;
     private AlbumDAO albumDAO = AlbumDAOFactory.create();
     private List<Photo> photos;
-
+    private String selectedPhoto;
     @ManagedProperty("#{authorizationManager}")
     private AuthorizationManager authorizationManager;
+
+
+    public void prepareBigImage(ActionEvent event){
+        selectedPhoto = (String) event.getComponent().getAttributes().get("filename");
+        System.out.println(selectedPhoto);
+    }
 
     public void init(){
         photos = loadPhotos();
@@ -62,5 +68,13 @@ public class PhotoManager {
 
     public void setPhotos(List<Photo> photos) {
         this.photos = photos;
+    }
+
+    public String getSelectedPhoto() {
+        return selectedPhoto;
+    }
+
+    public void setSelectedPhoto(String selectedPhoto) {
+        this.selectedPhoto = selectedPhoto;
     }
 }
