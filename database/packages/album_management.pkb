@@ -7,7 +7,7 @@ PACKAGE BODY ALBUM_MANAGEMENT AS
   p_description VARCHAR2
 ) AS
   Begin
-    INSERT INTO ALBUMS values (ALBUM_ID_SEQ.nextval, p_user_mail, p_name, sysdate, p_description);
+    INSERT INTO ALBUMS values (ALBUM_ID_SEQ.nextval, p_user_mail, p_name, current_date, p_description);
   END AddAlbum;
 
   Procedure Remove(
