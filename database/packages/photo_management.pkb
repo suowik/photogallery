@@ -1,29 +1,26 @@
 create or replace 
-PACKAGE BODY ALBUM_MANAGEMENT AS
+PACKAGE BODY PHOTO_MANAGEMENT AS
 
-  Procedure AddAlbum (
-  p_user_mail IN VARCHAR2,
-	P_Name IN Varchar2,
-  p_description IN VARCHAR2
+  Procedure Add (
+  user_mail VARCHAR2,
+  album_name VARCHAR2,
+  p_title VARCHAR2,
+  p_description VARCHAR2,
+  p_filename VARCHAR2,
+  p_place VARCHAR2
 ) AS
-  Begin
-    INSERT INTO ALBUMS values (ALBUM_ID_SEQ.nextval, p_user_mail, p_name, current_date, p_description);
-  END AddAlbum;
+    albumId NUMBER;
+  BEGIN
+    SELECT album_id INTO albumId FROM ALBUMS WHERE ALBUMS.USER_MAIL = user_mail AND ALBUMS.NAME = album_name;
+    INSERT INTO PHOTOS(photo_id, album_id, title, filename, description,aud_create,place) VALUES(PHOTO_ID_SEQ.nextval, albumId, p_title, p_description, p_filename, sysdate, p_place);
+  END Add;
 
-Procedure Remove(
-	p_id NUMBER
+  Procedure Remove(
+	p_name VARCHAR2
 ) AS
-  Begin
-    DELETE FROM ALBUMS WHERE ALBUM_ID = p_id;
+  BEGIN
+    /* TODO implementation required */
+    NULL;
   END Remove;
 
-PROCEDURE Findphotos(
-	email VARCHAR2,
-  album_name VARCHAR2,
-  photos OUT SYS_REFCURSOR
-) AS
-  Begin
-    OPEN photos FOR SELECT * FROM PHOTOS WHERE album_id = (SELECT album_id FROM ALBUMS WHERE ALBUMS.name = album_name AND ALBUMS.user_mail = email);
-  END Findphotos;
-
-END ALBUM_MANAGEMENT;
+END PHOTO_MANAGEMENT;

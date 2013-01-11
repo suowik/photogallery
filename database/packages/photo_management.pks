@@ -1,19 +1,16 @@
 create or replace 
-PACKAGE album_management
+PACKAGE photo_management
 IS
-Procedure AddAlbum (
-  p_user_mail IN VARCHAR2,
-	P_Name IN Varchar2,
-  p_description IN VARCHAR2
+Procedure Add (
+  user_mail VARCHAR2,
+  album_name VARCHAR2,
+  p_title VARCHAR2,
+  p_description VARCHAR2,
+  p_filename VARCHAR2,
+  p_place VARCHAR2
 );
 
 Procedure Remove(
-	p_id NUMBER
-);
-
-PROCEDURE Findphotos(
-  email VARCHAR2,
-	album_name VARCHAR2,
-  photos OUT SYS_REFCURSOR
+	p_name VARCHAR2
 );
 END;

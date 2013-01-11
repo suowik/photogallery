@@ -2,29 +2,28 @@ create or replace
 PACKAGE BODY ALBUM_MANAGEMENT AS
 
   Procedure AddAlbum (
-  p_user_mail VARCHAR2,
-	P_Name Varchar2,
-  p_description VARCHAR2
+  p_user_mail IN VARCHAR2,
+	P_Name IN Varchar2,
+  p_description IN VARCHAR2
 ) AS
   Begin
-    INSERT INTO ALBUMS values (ALBUM_ID_SEQ.nextval, p_user_mail, p_name, current_date, p_description);
+    INSERT INTO ALBUMS values (ALBUM_ID_SEQ.nextval, p_user_mail, p_name, sysdate, p_description);
   END AddAlbum;
 
-  Procedure Remove(
+Procedure Remove(
 	p_id NUMBER
 ) AS
   Begin
     DELETE FROM ALBUMS WHERE ALBUM_ID = p_id;
   END Remove;
 
-  Function Findphotos(
-	p_id NUMBER
-) Return Sys_Refcursor As
-  p_recordset SYS_REFCURSOR;
+PROCEDURE Findphotos(
+	email VARCHAR2,
+  album_name VARCHAR2,
+  photos OUT SYS_REFCURSOR
+) AS
   Begin
-    Open P_Recordset For
-    select * from Photos where Album_Id = p_id;
-    RETURN p_recordset;
+    OPEN photos FOR SELECT * FROM PHOTOS WHERE album_id = (SELECT album_id FROM ALBUMS WHERE ALBUMS.name = album_name AND ALBUMS.user_mail = email);
   END Findphotos;
 
 END ALBUM_MANAGEMENT;
