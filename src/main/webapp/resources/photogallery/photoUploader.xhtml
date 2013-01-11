@@ -4,13 +4,15 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:composite="http://java.sun.com/jsf/composite">
 
-<composite:interface>
-</composite:interface>
 
+
+<composite:interface>
+    <composite:attribute name="formId" required="true" type="java.lang.String"/>
+</composite:interface>
 <composite:implementation>
+    <p:growl showDetail="true" showSummary="true" id="notifications"/>
     <h:panelGroup id="photoUploadContainer">
         Dodawanie zdjęć do albumu: #{photoManager.albumName}
-        <p:growl showDetail="true" showSummary="true" id="notifications"/>
         <p:fileUpload fileUploadListener="#{fileUploadController.handleFileUpload}"
                       mode="advanced"
                       update="photoUploadContainer"
@@ -21,9 +23,9 @@
                 <p:panel>
                     <img src="/photos/#{authorizationManager.user.email}/#{photoManager.currentAlbum.name}/min/#{photo.filename}" alt="" style="width: 80px; height: 30px;"/>
                     <h:panelGrid columns="2">
-                        Tytuł: <p:inputText value="#{photo.title}"/>
-                        Opis: <p:inputText value="#{photo.description}"/>
-                        Miejsce: <p:inputText value="#{photo.place}"/>
+                        Tytuł: <p:inputText value="#{photo.title}" required="true"/>
+                        Opis: <p:inputText value="#{photo.description}" required="true"/>
+                        Miejsce: <p:inputText value="#{photo.place}" required="true"/>
                     </h:panelGrid>
                     <p:commandButton value="Dodaj" update="photos" actionListener="#{photosContainer.addPhoto}">
                         <f:attribute value="#{photo}" name="photo" />
@@ -31,7 +33,7 @@
                 </p:panel>
             </p:column>
         </p:dataGrid>
-        <p:commandButton value="Zapisz" actionListener="#{photosContainer.addAllPhotos}" update="photos"/>
+        <p:commandButton value="Zapisz" actionListener="#{photosContainer.addAllPhotos}" update="photos" />
     </h:panelGroup>
 </composite:implementation>
 

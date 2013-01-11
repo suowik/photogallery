@@ -29,7 +29,7 @@ public class RegistrationBean implements Serializable {
             userDAO.register(user);
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("Zarejestrowano"));
         } catch (UserExistsException e) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("Użytkownik isnieje"));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"","Użytkownik isnieje"));
         }
     }
 

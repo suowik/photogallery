@@ -6,9 +6,11 @@ import pl.edu.pk.ztbd.photogallery.to.Album;
 import pl.edu.pk.ztbd.photogallery.to.Photo;
 import pl.edu.pk.ztbd.photogallery.to.User;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -48,6 +50,8 @@ public class PhotosContainer implements Serializable {
         Photo photo = (Photo) event.getComponent().getAttributes().get("photo");
         persist(photo);
         removePhotoByFilename(photo.getFilename());
+        FacesContext.getCurrentInstance().addMessage("notifications",new FacesMessage("Dodano zdjęcie: "+photo.getTitle()));
+        photoManager.init();
     }
 
 

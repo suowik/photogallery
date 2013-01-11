@@ -25,6 +25,7 @@
             <p:layoutUnit position="north" size="55" resizable="true" closable="true" collapsible="true">
                 <p:menubar>
                     <p:menuitem value="Dodaj zdjęcia do albumu" onclick="addPhotos.show()"/>
+                    <p:menuitem value="Powrót do albumów" outcome="albums"/>
                     <p:menuitem value="Wyloguj się" actionListener="#{authorizationManager.logout}"
                                 icon="ui-icon-close"/>
                 </p:menubar>
@@ -37,7 +38,7 @@
 
             <p:layoutUnit position="center">
                 #{photoManager.init()}
-                <p:dataGrid columns="3" value="#{photoManager.photos}" var="photo">
+                <p:dataGrid value="#{photoManager.photos}" var="photo"  columns="3" rows="12" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
                     <p:column>
                         <p:panel>
                             <f:facet name="header">
@@ -66,7 +67,7 @@
 
                 </p:dialog>
                 <p:dialog widgetVar="addPhotos">
-                    <photogallery:photoUploader/>
+                    <photogallery:photoUploader formId="form"/>
 
                 </p:dialog>
             </p:layoutUnit>
