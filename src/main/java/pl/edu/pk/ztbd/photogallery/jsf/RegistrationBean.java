@@ -27,8 +27,9 @@ public class RegistrationBean implements Serializable {
     public void register(ActionEvent event){
         try {
             userDAO.register(user);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("Zarejestrowano"));
         } catch (UserExistsException e) {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("Jeb z dzidy"));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("Użytkownik isnieje"));
         }
     }
 
