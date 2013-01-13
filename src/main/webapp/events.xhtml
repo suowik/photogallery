@@ -2,9 +2,8 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:photogallery="http://java.sun.com/jsf/composite/photogallery">
+        >
 
 <h:head>
     <title></title>
@@ -13,17 +12,35 @@
 
 
 <h:body>
-    <h:form enctype="multipart/form-data">
-        <p:growl id="mainMessage" showSummary="true" showDetail="true"/>
-
+    <h:form>
         <p:layout fullPage="true">
 
+            <p:layoutUnit position="north" size="55" resizable="true" closable="true" collapsible="true">
+                <p:menubar>
+                    <p:menuitem outcome="index.xhtml" value="Powrót"/>
+                    <p:menuitem value="Wyloguj się" actionListener="#{authorizationManager.logout}"
+                                icon="ui-icon-close"/>
+                </p:menubar>
+            </p:layoutUnit>
+            <p:layoutUnit position="west" size="200" resizable="true" closable="true" collapsible="true">
+            </p:layoutUnit>
+            <p:layoutUnit position="east" size="200" resizable="true" closable="true" collapsible="true">
+
+            </p:layoutUnit>
 
             <p:layoutUnit position="center">
                 #{eventsManager.init()}
-                <p:dataList value="#{eventsManager.events}" var="event" itemType="disc">
-                    #{event.eventDate}, Użytkownik #{event.email} #{event.eventType.eventDesc}.
-                </p:dataList>
+                <p:dataTable value="#{eventsManager.events}" var="event">
+                    <p:column headerText="Data">
+                        #{event.eventDate}
+                    </p:column>
+                    <p:column headerText="Użytkownik">
+                        #{event.email}
+                    </p:column>
+                    <p:column headerText="Opis">
+                        #{event.eventType.eventDesc}
+                    </p:column>
+                </p:dataTable>
             </p:layoutUnit>
 
         </p:layout>
